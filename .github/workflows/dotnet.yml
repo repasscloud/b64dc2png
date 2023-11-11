@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         dotnet-version: [ "6.0.x", "7.0.x", "8.0.x" ]
-        rid: [ "linux-musl-x64", "linux-musl-x86", "win10-x64", "win10-x86", "win8-arm", "osx.10.15-x64", "osx.11-x64", "osx.12-x64", "freebsd-x64", "ubuntu.16.04-x64", "ubuntu.18.04-x64", "ubuntu.20.04-x64" ]
+        rid: [ "linux-musl-x64", "ubuntu.18.04-x64", "ubuntu.20.04-x64" ]
 
     steps:
     - name: Checkout code
