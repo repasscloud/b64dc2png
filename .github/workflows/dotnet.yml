@@ -38,7 +38,9 @@ jobs:
       - name: 🚀 Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: '**/bin/Release/**'
+          files: |
+            '**/bin/Release/net6.0/linux-musl-x64/publish/b64dc2png'
+            '**/bin/Release/net6.0/linux-x64/publish/b64dc2png'
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             Release created by GitHub Actions
