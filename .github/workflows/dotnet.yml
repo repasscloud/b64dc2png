@@ -2,13 +2,14 @@ name: .NET Build Matrix
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -17,16 +18,30 @@ jobs:
         rid: [ "linux-musl-x64", "linux-x64" ]
 
     steps:
-    - name: 🛒 Checkout
-      uses: actions/checkout@v3
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
 
-    - name: 🚀 Set up .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ matrix.dotnet-version }}
+      - name: 🚀 Set up .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
 
-    - name: 🏗️ Restore dependencies
-      run: dotnet restore
+      - name: 🏗️ Restore dependencies
+        run: dotnet restore
 
-    - name: 📦 dotnet publish
-      run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained=true /p:PublishSingleFile=true /p:PublishTrimmed=true
+      - name: 📦 dotnet publish
+        run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained=true /p:PublishSingleFile=true /p:PublishTrimmed=true
+
+      - name: 🏷️ Set version tag
+        run: echo "VERSION=$(date +'%Y%m%d')-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
+
+      - name: 🚀 Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: '**/bin/Release/**'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            Release created by GitHub Actions
+          draft: false
+          prerelease: false
+          tag_name: ${{ env.VERSION }}
