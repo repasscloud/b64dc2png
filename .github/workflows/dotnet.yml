@@ -14,19 +14,19 @@ jobs:
     strategy:
       matrix:
         dotnet-version: [ "6.0.x", "7.0.x", "8.0.x" ]
-        rid: [ "linux-musl-x64", "ubuntu.18.04-x64", "ubuntu.20.04-x64" ]
+        rid: [ "linux-musl-x64", "linux-x64" ]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - name: 🛒 Checkout
+      uses: actions/checkout@v3
 
-    - name: Setup .NET
+    - name: 🚀 Set up .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
 
-    - name: Restore dependencies
+    - name: 🏗️ Restore dependencies
       run: dotnet restore
 
-    - name: Build
+    - name: 📦 dotnet publish
       run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained=true /p:PublishSingleFile=true /p:PublishTrimmed=true
